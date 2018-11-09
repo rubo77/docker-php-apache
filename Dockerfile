@@ -1,8 +1,6 @@
 FROM php:7.0-apache
 
-RUN echo "deb http://deb.debian.org/debian stretch main" > /etc/apt/sources.list.d/stretch.list && \
-  echo "Package: *\\nPin: release n=jessie\\nPin-Priority: 900\\n\\nPackage: libpcre3*\\nPin: release n=stretch\\nPin-Priority: 1000" > /etc/apt/preferences && \
-  apt-get update && \
+RUN  apt-get update && \
   DEBIAN_FRONTEND=noninteractive apt-get -yq --no-install-recommends install \
   # Install dependencies
   git \
@@ -11,10 +9,12 @@ RUN echo "deb http://deb.debian.org/debian stretch main" > /etc/apt/sources.list
   libfreetype6-dev \
   libjpeg62-turbo-dev \
   libmcrypt-dev \
-  libpng12-dev \
+  libpng-dev \
   zlib1g-dev && \
   # Fix outdated PCRE bug in Debian 8
   apt-get install -yq -t stretch libpcre3 libpcre3-dev && \
+  pecl install apcu && \
+  docker-php-ext-enable apcu && \
   # configure extensions
   docker-php-ext-configure gd --with-freetype-dir=/usr/include/ --with-jpeg-dir=/usr/include/ && \
   docker-php-ext-install -j$(nproc) mysqli soap gd zip opcache && \
