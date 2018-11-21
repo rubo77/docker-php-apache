@@ -1,5 +1,9 @@
 FROM php:7.0-apache
 
+# Nullmailer debconf selections
+RUN echo "nullmailer shared/mailname string localhost" | debconf-set-selections
+RUN echo "nullmailer nullmailer/relayhost string localhost smtp --port=1025" | debconf-set-selections
+
 RUN  apt-get update && \
   DEBIAN_FRONTEND=noninteractive apt-get -yq --no-install-recommends install \
   # Install dependencies
@@ -10,6 +14,7 @@ RUN  apt-get update && \
   libjpeg62-turbo-dev \
   libmcrypt-dev \
   libpng-dev \
+  nullmailer \
   zlib1g-dev && \
   # Fix outdated PCRE bug in Debian 8
   apt-get install -yq -t stretch libpcre3 libpcre3-dev && \
@@ -33,5 +38,8 @@ RUN  apt-get update && \
 
 RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
 
-COPY config/php.ini /usr/local/etc/php/
+ENV NULLMAILER_HOST localhost
+ENV NULLMAILER_PORT 1025
 
+COPY config/php.ini /usr/local/etc/php/
+COPY config/docker-php-entrypoint /usr/local/bin

@@ -1,0 +1,12 @@
+#!/bin/sh
+echo "$NULLMAILER_HOST smtp --port=$NULLMAILER_PORT" > /etc/nullmailer/remotes
+/etc/init.d/nullmailer start
+
+set -e
+
+# first arg is `-f` or `--some-option`
+if [ "${1#-}" != "$1" ]; then
+	set -- apache2-foreground "$@"
+fi
+
+exec "$@"
