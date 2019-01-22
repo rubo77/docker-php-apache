@@ -1,4 +1,4 @@
-FROM php:7.0-apache
+FROM php:7.2-apache
 
 # Nullmailer debconf selections
 RUN echo "nullmailer shared/mailname string localhost" | debconf-set-selections
@@ -16,8 +16,6 @@ RUN  apt-get update && \
   libpng-dev \
   nullmailer \
   zlib1g-dev && \
-  # Fix outdated PCRE bug in Debian 8
-  apt-get install -yq -t stretch libpcre3 libpcre3-dev && \
   pecl install apcu && \
   docker-php-ext-enable apcu && \
   # configure extensions
