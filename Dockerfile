@@ -1,4 +1,4 @@
-FROM php:7.2-apache
+FROM php:7.4-apache
 
 # Nullmailer debconf selections
 RUN echo "nullmailer shared/mailname string localhost" | debconf-set-selections
@@ -17,6 +17,7 @@ RUN  apt-get update && \
   libpng-dev \
   locales \
   nullmailer \
+  libzip-dev \
   zlib1g-dev && \
   pecl install apcu && \
   # configure locale
@@ -25,7 +26,7 @@ RUN  apt-get update && \
   dpkg-reconfigure --frontend=noninteractive locales && \
   # configure extensions
   docker-php-ext-enable apcu && \
-  docker-php-ext-configure gd --with-freetype-dir=/usr/include/ --with-jpeg-dir=/usr/include/ && \
+  docker-php-ext-configure gd --with-freetype=/usr/include/ --with-jpeg=/usr/include/ && \
   docker-php-ext-configure intl && \
   docker-php-ext-install -j$(nproc) intl mysqli soap gd zip opcache && \
   # configure apache
