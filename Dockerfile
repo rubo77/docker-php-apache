@@ -28,7 +28,7 @@ RUN  apt-get update && \
   docker-php-ext-enable apcu && \
   docker-php-ext-configure gd --with-freetype=/usr/include/ --with-jpeg=/usr/include/ && \
   docker-php-ext-configure intl && \
-  docker-php-ext-install -j$(nproc) intl mysqli soap gd zip opcache && \
+  docker-php-ext-install -j$(nproc) intl mysqli soap gd zip && \
   # configure apache
   a2enmod rewrite && \
   # clean up
