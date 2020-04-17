@@ -14,7 +14,15 @@ To create your custom image based on this repository follow these steps:
     
 ## usage
 
-In your `docker-compose.yaml` you can use this image as
+Use the prebuild from docker hub
+
+`docker run --rm -v $(pwd):/var/www/html/ -p 8080:80 tan3/php-apache:7.4`
+
+Or your custom build
+
+`docker run --rm -v $(pwd):/var/www/html/ -p 8080:80 custom-php-apache:7.4`
+
+Or in your `docker-compose.yaml` you can use this image as
 
     services:
       app:
@@ -24,4 +32,4 @@ In your `docker-compose.yaml` you can use this image as
 
 Then start with 
 
-    docker-compose up -d
+    docker-compose up
